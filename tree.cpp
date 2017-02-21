@@ -188,16 +188,16 @@ public:
 	}
 };
 
-int main() {
-	Tree t;
-	vector<pair<int, int> > edges;
-	edges.push_back(pair<int, int>(0, 3));
-	edges.push_back(pair<int, int>(1, 3));
-	edges.push_back(pair<int, int>(2, 3));
-	edges.push_back(pair<int, int>(4, 3));
-	edges.push_back(pair<int, int>(5, 4));
-	vector<int> v = t.findMinHeightTrees2(1, edges);
-	for (int i = 0; i < v.size(); i++) {
-		cout << v[i] << " ";
-	}
-}
+//int main() {
+//	Tree t;
+//	vector<pair<int, int> > edges;
+//	edges.push_back(pair<int, int>(0, 3));
+//	edges.push_back(pair<int, int>(1, 3));
+//	edges.push_back(pair<int, int>(2, 3));
+//	edges.push_back(pair<int, int>(4, 3));
+//	edges.push_back(pair<int, int>(5, 4));
+//	vector<int> v = t.findMinHeightTrees2(1, edges);
+//	for (int i = 0; i < v.size(); i++) {
+//		cout << v[i] << " ";
+//	}
+//}
