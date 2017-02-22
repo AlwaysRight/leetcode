@@ -270,14 +270,56 @@ public:
 	}
 };
 
-int main() {
-	vector<int> v;
-	Tree t;
-	TreeNode * tree = new TreeNode(3);
-	tree->left = new TreeNode(1);
-	tree->left->right = new TreeNode(2);
-	v = t.preorderTraversal(tree);
-	for (int i = 0; i < v.size(); i++) {
-		cout << v[i] << " ";
+//==================================5===================================
+/**
+ * 	 Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
+
+ 	 Calling next() will return the next smallest number in the BST.
+
+ 	 Note: next() and hasNext() should run in average O(1) time and uses O(h) memory,
+ 	       where h is the height of the tree.
+ */
+class BSTIterator {
+private:
+	TreeNode *r;
+	stack<TreeNode *> s;
+public:
+
+	BSTIterator(TreeNode *root) {
+		r = root;
+		TreeNode * temp = root;
+		while (temp) {
+			s.push(temp);
+			temp = temp->left;
+		}
 	}
-}
+
+	/** @return whether we have a next smallest number */
+	bool hasNext() {
+		return !s.empty();
+	}
+
+	/** @return the next smallest number */
+	int next() {
+		TreeNode * temp = s.top();
+		s.pop();
+		int result = temp->val;
+		temp = temp->right;
+		while (temp) {
+			s.push(temp);
+			temp = temp->left;
+		}
+		return result;
+	}
+};
+
+//int main() {
+//	vector<int> v;
+//	Tree t;
+//	TreeNode * tree = new TreeNode(3);
+//	tree->left = new TreeNode(1);
+//	tree->left->right = new TreeNode(2);
+//	BSTIterator i = BSTIterator(tree);
+//	while (i.hasNext())
+//		cout << i.next();
+//}
