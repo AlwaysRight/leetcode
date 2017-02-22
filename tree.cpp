@@ -8,6 +8,8 @@
 #include <iostream>
 #include <vector>
 #include <queue>
+#include <limits>
+#include <stack>
 
 using namespace std;
 // Definition for a binary tree node.
@@ -140,7 +142,7 @@ public:
 		vector<int> result;
 		if (n < 1) {
 			return result;
-		}else if(n == 1){ // 注意 只有一个节点的特殊情况
+		} else if (n == 1) { // 注意 只有一个节点的特殊情况
 			result.push_back(0);
 			return result;
 		}
@@ -186,18 +188,96 @@ public:
 		}
 		return result;
 	}
+
+	//============================================3=======================================
+	//判断一棵树是不是BST
+	//首先想到是中序遍历，每一个遍历的元素都要比前一个大。
+	bool isValidBST(TreeNode* root) {
+		if (root == NULL) {
+			return true;
+		}
+		long last = (numeric_limits<long>::min)();
+		return isValidBST(root, last);
+	}
+
+	bool isValidBST(TreeNode* t, long &last) {	//注意要用last 的引用。。
+		bool l = true, r = true;
+		if (t->left) {
+			l = isValidBST(t->left, last);
+		}
+		if (t->val <= last) {
+			return false;
+		}
+		last = t->val;
+		if (t->right) {
+			r = isValidBST(t->right, last);
+		}
+		return l && r;
+	}
+
+	// 另外考虑，每次一个root 都要大于左边最大的， 小于右边最小的。
+	bool isValidBST2(TreeNode* root) {
+		if (root == NULL) {
+			return true;
+		}
+		long min = (numeric_limits<long>::min)();
+		long max = (numeric_limits<long>::max)();
+		return isValidBST(root, min, max);
+	}
+
+	bool isValidBST(TreeNode* t, long min, long max) {
+		if (t == NULL) {
+			return true;
+		}
+		if (!(t->val > min && t->val < max)) {
+			return false;
+		}
+		if (!isValidBST(t->left, min, t->val)) {
+			return false;
+		}
+		if (!isValidBST(t->right, t->val, max)) {
+			return false;
+		}
+		return true;
+	}
+
+	//===================================4=================================
+	//前序遍历。题目要求不用递归。。用stack,先打印，再把节点进stack. 沿着左子树遍历，到了头再出栈一个遍历右子树。直到栈空
+	vector<int> preorderTraversal(TreeNode* root) {
+		vector<int> result;
+		if (!root) {
+			return result;
+		}
+		stack<TreeNode *> s;
+		s.push(root);
+		result.push_back(root->val);
+		TreeNode * node = root->left;
+		while (!s.empty()) {
+			while (node) {
+				result.push_back(node->val);
+				s.push(node);
+				node = node->left;
+			}
+			node = s.top()->right;
+			s.pop();
+			if (node != NULL) {
+				s.push(node);
+				result.push_back(node->val);
+				node = node->left;
+			}
+		}
+		return result;
+	}
 };
 
-//int main() {
-//	Tree t;
-//	vector<pair<int, int> > edges;
-//	edges.push_back(pair<int, int>(0, 3));
-//	edges.push_back(pair<int, int>(1, 3));
-//	edges.push_back(pair<int, int>(2, 3));
-//	edges.push_back(pair<int, int>(4, 3));
-//	edges.push_back(pair<int, int>(5, 4));
-//	vector<int> v = t.findMinHeightTrees2(1, edges);
-//	for (int i = 0; i < v.size(); i++) {
-//		cout << v[i] << " ";
-//	}
-//}
+int main() {
+	vector<int> v;
+	Tree t;
+	TreeNode * tree = new TreeNode(3);
+	tree->left = new TreeNode(1);
+	tree->left->right = new TreeNode(2);
+	v = t.preorderTraversal(tree);
+	for (int i = 0; i < v.size(); i++) {
+		cout << v[i] << " ";
+	}
+}
