@@ -274,10 +274,10 @@ public:
 /**
  * 	 Implement an iterator over a binary search tree (BST). Your iterator will be initialized with the root node of a BST.
 
- 	 Calling next() will return the next smallest number in the BST.
+ Calling next() will return the next smallest number in the BST.
 
- 	 Note: next() and hasNext() should run in average O(1) time and uses O(h) memory,
- 	       where h is the height of the tree.
+ Note: next() and hasNext() should run in average O(1) time and uses O(h) memory,
+ where h is the height of the tree.
  */
 class BSTIterator {
 private:
@@ -313,13 +313,42 @@ public:
 	}
 };
 
-//int main() {
-//	vector<int> v;
-//	Tree t;
-//	TreeNode * tree = new TreeNode(3);
-//	tree->left = new TreeNode(1);
-//	tree->left->right = new TreeNode(2);
-//	BSTIterator i = BSTIterator(tree);
-//	while (i.hasNext())
-//		cout << i.next();
-//}
+//========================= 6 =============================
+
+/**
+ * Kth Smallest Element in a BST
+ */
+int kthSmallest(TreeNode* root, int k) {
+	int count = 0;
+	if (root == NULL) {
+		return -1;
+	}
+	stack<TreeNode *> s;
+	TreeNode* tmp = root;
+	s.push(tmp);
+	tmp = tmp->left;
+	while (true) {
+		while (tmp) {
+			s.push(tmp);
+			tmp = tmp->left;
+		}
+		if(s.empty()){
+			break;
+		}
+		tmp = s.top();
+		s.pop();
+		count++;
+		if (count == k) {
+			return tmp->val;
+		}
+		tmp = tmp->right;
+	}
+	return -1;
+}
+
+int main() {
+	vector<int> v;
+	TreeNode * tree = new TreeNode(1);
+	tree->right = new TreeNode(2);
+	cout << kthSmallest(tree, 2);
+}

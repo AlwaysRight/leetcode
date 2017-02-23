@@ -62,7 +62,7 @@ public:
 		long top = num / 2;
 		long down = 1;
 		long mid = 0;
-		long number = (long)(num);
+		long number = (long) (num);
 		while (down <= top) {
 			mid = (top + down) / 2;
 			long result = mid * mid;
@@ -76,9 +76,39 @@ public:
 		}
 		return false;
 	}
+
+	/**
+	 * 81
+	 *
+	 * The gray code is a binary numeral system where two successive values differ in only one bit.
+
+	 Given a non-negative integer n representing the total number of bits in the code, print the sequence of gray code. A gray code sequence must begin with 0.
+
+	 For example, given n = 2, return [0,1,3,2]. Its gray code sequence is:
+	 */
+
+	vector<int> grayCode(int n) {
+		vector<int> result;
+		result.push_back(0);
+		if (n < 1) {
+			return result;
+		}
+		result.push_back(1);
+		for (int i = 1; i < n; i++) {
+			int size = result.size();
+			for (int j = size - 1; j >= 0; j--) {
+				int tmp = 1 << (i);
+				result.push_back(tmp + result[j]);
+			}
+		}
+		return result;
+	}
 };
 
 //int main() {
 //	Solution s;
-//	cout << s.isPerfectSquare(808201);
+//	vector<int> v = s.grayCode(3);
+//	for (int i = 0; i < v.size(); i++) {
+//		cout << v[i] << " ";
+//	}
 //}

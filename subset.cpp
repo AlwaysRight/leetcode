@@ -63,23 +63,25 @@ public:
 		return result;
 	}
 
-	void findSubsequences(vector<int>& nums, vector<vector<int> >& res, vector<int>& tmp,  int start){
-		if(start >= nums.size()){
+	void findSubsequences(vector<int>& nums, vector<vector<int> >& res,
+			vector<int>& tmp, int start) {
+		if (start >= nums.size()) {
 			return;
 		}
-		for(int i = start; i < nums.size(); i++){
+		for (int i = start; i < nums.size(); i++) {
 			bool isReapeted = false;
-			for(int j = start; j < i; j++){
+			for (int j = start; j < i; j++) {
 				//重复元素的判断
-				if(nums[j] == nums[i]){
+				if (nums[j] == nums[i]) {
 					isReapeted = true;
 				}
 			}
-			if((start == 0 ||  (nums[i] >= tmp[tmp.size() - 1])) && (!isReapeted)){
+			if ((start == 0 || (nums[i] >= tmp[tmp.size() - 1]))
+					&& (!isReapeted)) {
 				// 注意第一个元素也要判断重复
 				tmp.push_back(nums[i]);
 
-				if(tmp.size() > 1){
+				if (tmp.size() > 1) {
 					res.push_back(tmp);
 				}
 				findSubsequences(nums, res, tmp, i + 1);
@@ -87,21 +89,52 @@ public:
 			}
 		}
 	}
+	//解法二  像上题的第二解法一样，从子集填元素。 注意重复元素的处理
+	vector<vector<int> > findSubsequences2(vector<int>& nums) {
+		vector<vector<int> > result;
+		vector<vector<int> > return_result;
+		vector<int> v;
+		int *splitSize = new int[nums.size()]; // 重复元素分割size
+		result.push_back(v);
+
+		for (unsigned int i = 0; i < nums.size(); i++) {
+			int start = 0;
+			for (unsigned int n = 0; n < i; n++) {
+				if (nums[n] == nums[i]) {
+					start = splitSize[n];
+				}
+			}
+			unsigned int size = result.size();
+			for (unsigned int j = start; j < size; j++) {
+				v = result[j];
+				if (v.size() == 0 || v[v.size() - 1] <= nums[i]) {
+					v.push_back(nums[i]);
+					result.push_back(v);
+					if (v.size() >= 2) {
+						return_result.push_back(v);
+					}
+				}
+			}
+			splitSize[i] = size;
+		}
+		return return_result;
+	}
+
 };
 
-int main() {
-	Subset s;
-	vector<int> nums;
-	nums.push_back(1);
-	nums.push_back(1);
-	nums.push_back(2);
-	vector<vector<int> > v = s.findSubsequences(nums);
-
-	for (int i = 0; i < v.size(); i++) {
-		for (int j = 0; j < v[i].size(); j++) {
-			cout << v[i][j] << " ";
-		}
-		cout << endl;
-	}
-}
+//int main() {
+//	Subset s;
+//	vector<int> nums;
+//	nums.push_back(1);
+//	nums.push_back(1);
+//	nums.push_back(2);
+//	vector<vector<int> > v = s.findSubsequences2(nums);
+//
+//	for (int i = 0; i < v.size(); i++) {
+//		for (int j = 0; j < v[i].size(); j++) {
+//			cout << v[i][j] << " ";
+//		}
+//		cout << endl;
+//	}
+//}
 
