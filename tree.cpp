@@ -346,9 +346,11 @@ int kthSmallest(TreeNode* root, int k) {
 	return -1;
 }
 
+/*
 int main() {
 	vector<int> v;
 	TreeNode * tree = new TreeNode(1);
 	tree->right = new TreeNode(2);
 	cout << kthSmallest(tree, 2);
 }
+*/

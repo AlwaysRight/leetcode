@@ -71,4 +71,56 @@ public:
 		return count;
 	}
 
+	//241. Different Ways to Add Parentheses  ·ÖÖÎ·¨
+	/**
+	 * Given a string of numbers and operators, return all possible results from computing all the different possible ways to group numbers and operators. The valid operators are +, - and *.
+
+
+	 Example 1
+	 Input: "2-1-1".
+
+	 ((2-1)-1) = 0
+	 (2-(1-1)) = 2
+	 */
+	vector<int> diffWaysToCompute(string input) {
+		return diffWaysToCompute(input, 0, input.length());
+	}
+	vector<int> diffWaysToCompute(string input, int start, int end) {
+		vector<int> result;
+		bool flag = true;
+		for (int i = start; i < end; i++) {
+			if (input[i] == '+' || input[i] == '-' || input[i] == '*') {
+				flag = false;
+				vector<int> left = diffWaysToCompute(input, start, i);
+				vector<int> right = diffWaysToCompute(input, i + 1, end);
+				for (unsigned int j = 0; j < left.size(); j++) {
+					for (unsigned int k = 0; k < right.size(); k++) {
+						if (input[i] == '+') {
+							result.push_back(left[j] + right[k]);
+						} else if (input[i] == '-') {
+							result.push_back(left[j] - right[k]);
+						} else {
+							result.push_back(left[j] * right[k]);
+						}
+					}
+				}
+			}
+		}
+		if (flag) {
+			int x = 0;
+			for (int i = start; i < end; i++) {
+				x = 10 * x + (input[i] - '0');
+			}
+			result.push_back(x);
+		}
+		return result;
+	}
 };
+
+//int main() {
+//	Back b;
+//	vector<int> c = b.diffWaysToCompute("10+5");
+//	for (int i = 0; i < c.size(); i++) {
+//		cout << c[i] << endl;
+//	}
+//}
