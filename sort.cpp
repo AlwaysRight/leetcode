@@ -30,11 +30,3 @@ public:
 	}
 };
 
-int main() {
-	Solution s;
-	vector<int> v;
-	v.push_back(5);
-	v.push_back(12);
-	v.push_back(121);
-	cout << s.largestNumber(v);
-}
